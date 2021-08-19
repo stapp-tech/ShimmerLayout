@@ -1,3 +1,4 @@
+[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Maven Central](https://jitpack.io/v/stapp-tech/ShimmerLayout.svg)](https://jitpack.io/#stapp-tech/ShimmerLayout/Tag)
 
 # ShimmerLayout
@@ -39,9 +40,9 @@ Create the layout on which you want to apply the effect and add as a child of a 
 ```
 
 Last, but not least you have to start it from your Java code
-```java
-ShimmerLayout shimmerText = (ShimmerLayout) findViewById(R.id.shimmer_text);
-shimmerText.startShimmerAnimation();
+```kotlin
+val shimmerText = findViewById(R.id.shimmer_text)
+shimmerText.startShimmerAnimation()
 ```
 
 # License
