@@ -3,5 +3,5 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="shimmer_background_color">#b1b1b1</color>
+    <color name="color_shimmer_background">#B1B1B1</color>
 </resources>

@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
+@SuppressWarnings("unused")
 public class ShimmerLayout extends FrameLayout {
 
     private static final int DEFAULT_ANIMATION_DURATION = 1500;
@@ -46,7 +47,7 @@ public class ShimmerLayout extends FrameLayout {
 
     private boolean isAnimationReversed;
     private boolean isAnimationStarted;
-    private boolean autoStart;
+    private final boolean autoStart;
     private int shimmerAnimationDuration;
     private int shimmerColor;
     private int shimmerAngle;
@@ -76,7 +77,7 @@ public class ShimmerLayout extends FrameLayout {
         try {
             shimmerAngle = a.getInteger(R.styleable.ShimmerLayout_shimmer_angle, DEFAULT_ANGLE);
             shimmerAnimationDuration = a.getInteger(R.styleable.ShimmerLayout_shimmer_animation_duration, DEFAULT_ANIMATION_DURATION);
-            shimmerColor = a.getColor(R.styleable.ShimmerLayout_shimmer_color, getColor(R.color.shimmer_color));
+            shimmerColor = a.getColor(R.styleable.ShimmerLayout_shimmer_color, getColor(R.color.color_shimmer));
             autoStart = a.getBoolean(R.styleable.ShimmerLayout_shimmer_auto_start, false);
             maskWidth = a.getFloat(R.styleable.ShimmerLayout_shimmer_mask_width, 0.5F);
             gradientCenterColorWidth = a.getFloat(R.styleable.ShimmerLayout_shimmer_gradient_center_color_width, 0.1F);
@@ -307,7 +308,7 @@ public class ShimmerLayout extends FrameLayout {
         }
 
         final int edgeColor = reduceColorAlphaValueToZero(shimmerColor);
-        final float shimmerLineWidth = getWidth() / 2 * maskWidth;
+        final float shimmerLineWidth = getWidth() / 2f * maskWidth;
         final float yPosition = (0 <= shimmerAngle) ? getHeight() : 0;
 
         LinearGradient gradient = new LinearGradient(
@@ -355,14 +356,11 @@ public class ShimmerLayout extends FrameLayout {
         maskAnimator.setDuration(shimmerAnimationDuration);
         maskAnimator.setRepeatCount(ObjectAnimator.INFINITE);
 
-        maskAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                maskOffsetX = animationFromX + (int) animation.getAnimatedValue();
+        maskAnimator.addUpdateListener(animation -> {
+            maskOffsetX = animationFromX + (int) animation.getAnimatedValue();
 
-                if (maskOffsetX + shimmerBitmapWidth >= 0) {
-                    invalidate();
-                }
+            if (maskOffsetX + shimmerBitmapWidth >= 0) {
+                invalidate();
             }
         });
 
@@ -397,7 +395,7 @@ public class ShimmerLayout extends FrameLayout {
     }
 
     private int calculateMaskWidth() {
-        final double shimmerLineBottomWidth = (getWidth() / 2 * maskWidth) / Math.cos(Math.toRadians(Math.abs(shimmerAngle)));
+        final double shimmerLineBottomWidth = (getWidth() / 2f * maskWidth) / Math.cos(Math.toRadians(Math.abs(shimmerAngle)));
         final double shimmerLineRemainingTopWidth = getHeight() * Math.tan(Math.toRadians(Math.abs(shimmerAngle)));
 
         return (int) (shimmerLineBottomWidth + shimmerLineRemainingTopWidth);
@@ -417,6 +415,7 @@ public class ShimmerLayout extends FrameLayout {
 
     /**
      * in ShimmerLayout is used ComposeShader, which contains bug in android 4.1.1 with layer hardware acceleration
+     *
      * @see <a href="https://stackoverflow.com/questions/12445583/issue-with-composeshader-on-android-4-1-1">StackOverflow</a>
      */
     private void enableForcedSoftwareLayerIfNeeded() {

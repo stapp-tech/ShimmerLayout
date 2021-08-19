@@ -3,6 +3,6 @@
        android:shape="oval">
 
     <solid
-        android:color="@color/shimmer_background_color"/>
+        android:color="@color/color_shimmer_background"/>
 
 </shape>
